@@ -21,9 +21,9 @@
 
 <div class="main">
     <table width="100%">
-        <tr width="100%">
-            <td width="50%" ng-repeat="player in playerData" ng-show="player.visible">
-                <video id="{{player.id}}" class="video-js vjs-default-skin" width="500" height="264">
+        <tr width="100%" ng-repeat="player in playerData" ng-if="$index%2 == 0">
+            <td width="50%" ng-show="playerData[$index].visible">
+                <video id="{{playerData[$index].id}}" class="video-js vjs-default-skin" width="500" height="264">
                     <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a
                         web
                         browser that
@@ -31,7 +31,19 @@
                     </p>
                 </video>
                 <div class="custom-seekbar">
-                    <span ng-style="{'width': player.width}"></span>
+                    <span ng-style="{'width': playerData[$index].width}"></span>
+                </div>
+            </td>
+            <td width="50%" ng-show="playerData[$index + 1].visible">
+                <video id="{{playerData[$index + 1].id}}" class="video-js vjs-default-skin" width="500" height="264">
+                    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a
+                        web
+                        browser that
+                        <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                    </p>
+                </video>
+                <div class="custom-seekbar">
+                    <span ng-style="{'width': playerData[$index + 1].width}"></span>
                 </div>
             </td>
         </tr>

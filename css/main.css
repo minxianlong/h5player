@@ -10,42 +10,17 @@
     padding-top: 20px;
 }
 
-.main {
-    margin-left: 160px; /* Same as the width of the sidenav */
-    font-size: 28px; /* Increased text to enable scrolling */
-    padding: 0px 10px;
-}
-
 @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav ul {font-size: 18px;}
+    .sidenav {
+        padding-top: 15px;
+    }
+
+    .sidenav ul {
+        font-size: 18px;
+    }
 }
 
-.custom-seekbar {
-    cursor: pointer;
-    height: 5px;
-    margin-bottom: 10px;
-    outline: thin solid orange;
-    overflow: hidden;
-    position: relative;
-    width: 500px;
-}
-
-.custom-seekbar span {
-    background-color: orange;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 10px;
-    width: 0px;
-}
-
-/* following rule is for hiding Stack Overflow's console  */
-.as-console-wrapper {
-    display: none !important;
-}
-
-ul.checkbox  {
+ul.checkbox {
     margin: 0;
     padding: 0;
     margin-left: 20px;
@@ -67,13 +42,33 @@ ul.checkbox li label {
 }
 
 ul.checkbox li:hover,
-ul.checkbox li.focus  {
+ul.checkbox li.focus {
     background-color: lightyellow;
     border: 1px gray solid;
     width: 12em;
 }
 
-.required {
-    font-size: 75%;
-    color: blue;
+.main {
+    margin-left: 160px; /* Same as the width of the sidenav */
+    font-size: 28px; /* Increased text to enable scrolling */
+    padding: 0px 10px;
+}
+
+.custom-seekbar {
+    cursor: pointer;
+    height: 5px;
+    margin-bottom: 10px;
+    outline: thin solid orange;
+    overflow: hidden;
+    position: relative;
+    width: 500px;
+}
+
+.custom-seekbar span {
+    background-color: orange;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 10px;
+    width: 0px;
 }
