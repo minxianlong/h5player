@@ -4,7 +4,10 @@ angular.module("myApp", [])
             var index = this.playlist.currentIndex();
             var currentTime = this.currentTime();
 
+            console.log(JSON.stringify(this.playData));
             this.playData.width = (currentTime + index * 10) * 100 / (this.playData.playlist.length * 10) + '%';
+
+            $scope.$apply();
         }
 
         $scope.refresh = function (player) {
@@ -39,7 +42,6 @@ angular.module("myApp", [])
                 if ($scope.playerData[i].visible) {
                     player.play();
                 }
-
             }
         };
 
@@ -107,9 +109,10 @@ angular.module("myApp", [])
             };
         };
 
-        $scope.init();
+
 
         $timeout(function () {
+            $scope.init();
             $scope.load();
         }, 1000);
     });
