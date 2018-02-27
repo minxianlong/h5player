@@ -1,4 +1,4 @@
-angular.module("myApp", [])
+angular.module("myApp", ['daterangepicker'])
     .controller('MainController', function ($scope, $timeout) {
         function timeUpdate() {
             var index = this.playlist.currentIndex();
@@ -24,6 +24,11 @@ angular.module("myApp", [])
         };
 
         $scope.load = function () {
+            $scope.date = {
+                startDate: moment().subtract(1, "days"),
+                endDate: moment()
+            };
+
             $scope.playerData = [
                 {
                     id: 'video_1',
@@ -105,6 +110,6 @@ angular.module("myApp", [])
             });
 
         };
-        
+
         $scope.load();
     });
