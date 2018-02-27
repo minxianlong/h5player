@@ -1,4 +1,4 @@
-angular.module("myApp", ['daterangepicker'])
+angular.module("myApp")
     .controller('MainController', function ($scope, $timeout) {
         function timeUpdate() {
             var index = this.playlist.currentIndex();
