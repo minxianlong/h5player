@@ -4,7 +4,7 @@ var fs = require('fs');
 
 http.createServer(function (request, response) {
     var pathName = url.parse(request.url).pathname;
-    console.log(pathName);
+
     fs.readFile(__dirname + pathName, function (err, data) {
         if (err) {
             response.writeHead(404, {'Content-type': 'text/plan'});
