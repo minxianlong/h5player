@@ -24,31 +24,6 @@ angular.module("myApp", [])
         };
 
         $scope.load = function () {
-            $(document).ready(function(e) {
-                for (var i = 0; i < $scope.playerData.length; i++) {
-                    var id = $scope.playerData[i].id;
-                    var player = videojs(id, {
-                        controls: false,
-                        autoplay: false,
-                        loop: false,
-                        preload: 'auto'
-                    });
-
-                    player.playData = $scope.playerData[i];
-                    player.playlist($scope.playerData[i].playlist);
-                    player.playlist.autoadvance(0);
-                    player.on("timeupdate", timeUpdate);
-                    $scope.videoPlayers[$scope.playerData[i].id] = player;
-
-                    if ($scope.playerData[i].visible) {
-                        player.play();
-                    }
-                }
-            });
-
-        };
-
-        $scope.init = function () {
             $scope.playerData = [
                 {
                     id: 'video_1',
@@ -107,14 +82,29 @@ angular.module("myApp", [])
 
             $scope.videoPlayers = {};
 
-            $scope.value = {
-                width: '0%'
-            };
+            $(document).ready(function (e) {
+                for (var i = 0; i < $scope.playerData.length; i++) {
+                    var id = $scope.playerData[i].id;
+                    var player = videojs(id, {
+                        controls: false,
+                        autoplay: false,
+                        loop: false,
+                        preload: 'auto'
+                    });
+
+                    player.playData = $scope.playerData[i];
+                    player.playlist($scope.playerData[i].playlist);
+                    player.playlist.autoadvance(0);
+                    player.on("timeupdate", timeUpdate);
+                    $scope.videoPlayers[$scope.playerData[i].id] = player;
+
+                    if ($scope.playerData[i].visible) {
+                        player.play();
+                    }
+                }
+            });
+
         };
-
-        $scope.init();
-
-        $timeout(function () {
-            $scope.load();
-        }, 1000);
+        
+        $scope.load();
     });
