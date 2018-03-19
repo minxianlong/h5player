@@ -1,5 +1,5 @@
 angular.module("h5player")
-    .factory('SiteListService', function (DataAccessService, ServiceUrlConstant) {
+    .factory('SiteService', function (DataAccessService, ServiceUrlConstant) {
         /*
         { "site_list" : [
          { "site_id":0, "name":"site_1", "desc":"TBD", "failover":"site_backup", "node_list": [
@@ -25,12 +25,12 @@ angular.module("h5player")
                 return DataAccessService.get(ServiceUrlConstant.SITE_LIST)
                     .then(function (response) {
                         if (response.msg == 'success') {
-                            return response.data;
+                            return response.data.site_list;
                         } else {
                             return [];
                         }
                     })
-                    .catch(function (e) {
+                    .catch(function () {
                         return [];
                     })
             }

@@ -9,6 +9,7 @@
     <script src="lib/jquery/dist/jquery.min.js"></script>
     <script src="lib/angular/angular.min.js"></script>
     <script src="lib/moment/moment.js"></script>
+    <script src="lib/lodash/lodash.js"></script>
     <script src="lib/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script src="lib/angular-daterangepicker/js/angular-daterangepicker.js"></script>
     <script src="lib/video.js/dist/video.js"></script>
@@ -18,14 +19,17 @@
     <script src="js/service/utility/Constants.js"></script>
     <script src="js/service/utility/DataAccessService.js"></script>
     <script src="js/service/utility/DomainService.js"></script>
-    <script src="js/service/entity/SiteListService.js"></script>
+    <script src="js/service/entity/SiteService.js"></script>
+    <script src="js/service/entity/CameraService.js"></script>
     <script src="js/controller/MainController.js"></script>
 </head>
 <body>
 <div class="sidenav">
+    <select class="selector" ng-model="selectedSite" ng-options="x for x in siteNames" ng-change="changeSite()">
+    </select>
     <ul class="checkbox">
-        <li ng-repeat="player in playerData">
-            <input type="checkbox" ng-model="player.visible" ng-change="refresh(player)"/><label>{{player.id}}</label>
+        <li ng-repeat="camera in cameraList">
+            <input type="checkbox" ng-model="camera.visible" ng-change="refresh(camera)"/><label>{{camera.name}}</label>
         </li>
     </ul>
 </div>
@@ -41,37 +45,22 @@
         </div>
         <div class="form-group">
             <table width="100%">
-                <tr width="100%" ng-repeat="player in playerData" ng-if="$index%2 == 0">
-                    <td width="50%" ng-show="playerData[$index].visible">
-                        <video id="{{playerData[$index].id}}" class="video-js vjs-default-skin" width="500"
-                               height="264">
-                            <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading
-                                to
-                                a
-                                web
-                                browser that
-                                <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5
-                                    video</a>
-                            </p>
-                        </video>
-                        <div class="custom-seekbar">
-                            <span ng-style="{'width': playerData[$index].width}"></span>
+                <tr ng-repeat="i in dimension">
+                    <td ng-style="{'width': 100/(dimension.length) + '%'}" ng-repeat="j in dimension">
+                        <div class="title">
+                            <h3>{{playerData[0].name}}</h3>
                         </div>
-                    </td>
-                    <td width="50%" ng-show="playerData[$index + 1].visible">
-                        <video id="{{playerData[$index + 1].id}}" class="video-js vjs-default-skin" width="500"
-                               height="264">
-                            <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading
-                                to
-                                a
-                                web
-                                browser that
-                                <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5
-                                    video</a>
-                            </p>
-                        </video>
-                        <div class="custom-seekbar">
-                            <span ng-style="{'width': playerData[$index + 1].width}"></span>
+                        <div class="video">
+                            <video id="{{playerData[0].id}}" class="video-js vjs-default-skin vjs-16-9">
+                                <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading
+                                    to a web browser that
+                                    <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5
+                                        video</a>
+                                </p>
+                            </video>
+                        </div>
+                        <div class="seekbar">
+                            <span ng-style="{'width': playerData[0].width}"></span>
                         </div>
                     </td>
                 </tr>

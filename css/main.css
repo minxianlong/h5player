@@ -20,15 +20,20 @@
     }
 }
 
+select.selector {
+    margin-left: 0px;
+    padding: 0;
+    width: 80%;
+}
+
 ul.checkbox {
-    margin: 0;
     padding: 0;
     margin-left: 20px;
     list-style: none;
 }
 
 ul.checkbox li input {
-    margin-right: .25em;
+    margin-right: 0px;
 }
 
 ul.checkbox li {
@@ -37,7 +42,7 @@ ul.checkbox li {
 
 ul.checkbox li label {
     margin-left: 0;
-    font-size: 20px;
+    font-size: 15px;
     color: #818181;
 }
 
@@ -57,17 +62,23 @@ ul.checkbox li.focus {
     margin-left: 10px;
 }
 
-.custom-seekbar {
+.video {
+    position: relative;
+    margin: 10px;
+}
+
+.seekbar {
     cursor: pointer;
     height: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
     margin-bottom: 10px;
     outline: thin solid orange;
     overflow: hidden;
     position: relative;
-    width: 500px;
 }
 
-.custom-seekbar span {
+.seekbar span {
     background-color: orange;
     position: absolute;
     top: 0;

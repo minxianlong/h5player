@@ -1,46 +1,32 @@
 angular.module("h5player")
-    .controller('MainController', function ($scope, SiteListService) {
+    .controller('MainController', function ($scope, $q, SiteService, CameraService) {
         function timeUpdate() {
             var index = this.playlist.currentIndex();
             var currentTime = this.currentTime();
 
-            console.log(JSON.stringify(this.playData));
             this.playData.width = (currentTime + index * 10) * 100 / (this.playData.playlist.length * 10) + '%';
 
             $scope.$apply();
         }
 
-        $scope.refresh = function (player) {
-            console.log($scope.videoPlayers[player.id]);
-            if (player) {
-                if (player.visible) {
-                    $scope.videoPlayers[player.id].play();
-                }
-                else {
-                    $scope.videoPlayers[player.id].pause();
-                }
-
-            }
-        };
-
-        $scope.load = function () {
-            $scope.date = {
-                startDate: moment().subtract(1, "days"),
-                endDate: moment()
-            };
-
-            $scope.playerData = [];
-            $scope.videoPlayers = {};
-
-
-            SiteListService.getSiteList()
+        function changeSite() {
+            var siteId = $scope.siteList[$scope.selectedSite].site_id;
+            CameraService.getCameraList(siteId)
                 .then(function (data) {
-                    console.log(JSON.stringify(data));
-                    var siteList = data.site_list;
-                    return siteList.forEach(function (site) {
+                    $scope.cameraList = data;
+                    var camInfoPromise = [];
+                    $scope.cameraList.forEach(function (camera) {
+                        camInfoPromise.push(CameraService.getCameraInfo(siteId, camera.id))
+                    });
+
+                    return $q.all(camInfoPromise);
+                })
+                .then(function (camInfoArray) {
+                    camInfoArray.forEach(function (camInfo) {
                         $scope.playerData.push(
                             {
-                                id: site.name,
+                                id: 'cam_' + camInfo.cam_id,
+                                name: camInfo.name,
                                 visible: true,
                                 playlist: [{
                                     sources: [{
@@ -61,11 +47,10 @@ angular.module("h5player")
                                 width: '0%'
                             }
                         )
-                    })
+                    });
                 })
                 .then(function () {
                     $(document).ready(function () {
-                        console.log(JSON.stringify($scope.playerData));
                         for (var i = 0; i < $scope.playerData.length; i++) {
                             var id = $scope.playerData[i].id;
                             var player = videojs(id, {
@@ -86,6 +71,49 @@ angular.module("h5player")
                             }
                         }
                     })
+                })
+        }
+
+        $scope.siteList = {};
+        $scope.siteNames = [];
+        $scope.selectedSite = '';
+
+        $scope.cameraList = [];
+
+        $scope.dimension = _.range(3);
+
+        $scope.playerData = [];
+        $scope.videoPlayers = {};
+
+        $scope.date = {
+            startDate: moment().subtract(1, "days"),
+            endDate: moment()
+        };
+
+        $scope.refresh = function (player) {
+            console.log($scope.videoPlayers[player.id]);
+            if (player) {
+                if (player.visible) {
+                    $scope.videoPlayers[player.id].play();
+                }
+                else {
+                    $scope.videoPlayers[player.id].pause();
+                }
+
+            }
+        };
+
+        $scope.load = function () {
+            SiteService.getSiteList()
+                .then(function (data) {
+                    return data.forEach(function (site) {
+                        $scope.siteList[site.name] = site;
+                    })
+                })
+                .then(function () {
+                    $scope.siteNames = Object.keys($scope.siteList);
+                    $scope.selectedSite = $scope.siteNames[0];
+                    changeSite();
                 })
         };
 
