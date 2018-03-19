@@ -1,4 +1,4 @@
-.sidenav {
+.side_nav {
     height: 100%;
     width: 160px;
     position: fixed;
@@ -11,63 +11,71 @@
 }
 
 @media screen and (max-height: 450px) {
-    .sidenav {
+    .side_nav {
         padding-top: 15px;
     }
 
-    .sidenav ul {
+    .side_nav ul {
         font-size: 18px;
     }
 }
 
-select.selector {
-    margin-left: 0px;
+select.site_selector {
+    margin-left: 10px;
     padding: 0;
     width: 80%;
 }
 
-ul.checkbox {
+ul.camera_checkbox {
     padding: 0;
     margin-left: 20px;
     list-style: none;
 }
 
-ul.checkbox li input {
+ul.camera_checkbox li input {
     margin-right: 0px;
 }
 
-ul.checkbox li {
+ul.camera_checkbox li {
     border: 1px transparent solid;
 }
 
-ul.checkbox li label {
+ul.camera_checkbox li label {
     margin-left: 0;
     font-size: 15px;
     color: #818181;
 }
 
-ul.checkbox li:hover,
-ul.checkbox li.focus {
+ul.camera_checkbox li:hover,
+ul.camera_checkbox li.focus {
     background-color: lightyellow;
     border: 1px gray solid;
     width: 12em;
 }
 
-.main {
+.main_area {
     margin-left: 160px; /* Same as the width of the sidenav */
     padding: 0px 10px;
 }
 
-.main form {
+.main_area form {
     margin-left: 10px;
 }
 
-.video {
+.date_picker {
+    margin-right: 10px;
+}
+
+.video_table {
+    width: 100%;
+}
+
+.video_player {
     position: relative;
     margin: 10px;
 }
 
-.seekbar {
+.video_seekbar {
     cursor: pointer;
     height: 5px;
     margin-left: 10px;
@@ -78,7 +86,7 @@ ul.checkbox li.focus {
     position: relative;
 }
 
-.seekbar span {
+.video_seekbar span {
     background-color: orange;
     position: absolute;
     top: 0;

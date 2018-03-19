@@ -24,42 +24,51 @@
     <script src="js/controller/MainController.js"></script>
 </head>
 <body>
-<div class="sidenav">
-    <select class="selector" ng-model="selectedSite" ng-options="x for x in siteNames" ng-change="changeSite()">
+
+<div class="side_nav">
+    <select class="site_selector" ng-model="selectedSite" ng-options="x for x in siteNames" ng-change="changeSite()">
     </select>
-    <ul class="checkbox">
+    <ul class="camera_checkbox">
         <li ng-repeat="camera in cameraList">
             <input type="checkbox" ng-model="camera.visible" ng-change="refresh(camera)"/><label>{{camera.name}}</label>
         </li>
     </ul>
 </div>
 
-<div class="main">
-    <h3>Video Monitor</h3>
+<div class="main_area">
+    <h2>Video Monitor</h2>
 
-    <form name="dateForm" class="form-horizontal">
-        <div class="form-group">
-            <label for="daterange1" class="control-label">Date picker</label>
-            <input date-range-picker id="daterange1" name="daterange1" class="form-control date-picker" type="text"
-                   ng-model="date" required/>
+    <form name="mainForm" class="form-horizontal">
+        <div class="row video_setting">
+            <div class="col-md-3 form-group">
+                <div class="date_picker">
+                    <label for="daterange1" class="control-label">Date picker</label>
+                    <input date-range-picker id="daterange1" name="daterange1" class="form-control date-picker"
+                           type="text" ng-model="date" required/>
+                </div>
+            </div>
+            <div class="col-md-3 form-group">
+                <div class="mode_picker">
+                    <label for="daterange2" class="control-label">Mode Selector</label>
+                    <input date-range-picker id="daterange2" name="daterange2" class="form-control date-picker"
+                           type="text"
+                           ng-model="date" required/>
+                </div>
+            </div>
+            <div class="col-md-6 form-group">
+            </div>
         </div>
-        <div class="form-group">
-            <table width="100%">
+        <div class="form-group video_area">
+            <table class="video_table">
                 <tr ng-repeat="i in dimension">
                     <td ng-style="{'width': 100/(dimension.length) + '%'}" ng-repeat="j in dimension">
-                        <div class="title">
+                        <div class="video_name">
                             <h3>{{playerData[0].name}}</h3>
                         </div>
-                        <div class="video">
-                            <video id="{{playerData[0].id}}" class="video-js vjs-default-skin vjs-16-9">
-                                <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading
-                                    to a web browser that
-                                    <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5
-                                        video</a>
-                                </p>
-                            </video>
+                        <div class="video_player">
+                            <video id="{{playerData[0].id}}" class="video-js vjs-default-skin vjs-16-9"/>
                         </div>
-                        <div class="seekbar">
+                        <div class="video_seekbar">
                             <span ng-style="{'width': playerData[0].width}"></span>
                         </div>
                     </td>
