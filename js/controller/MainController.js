@@ -1,5 +1,5 @@
 angular.module("h5player")
-    .controller('MainController', function ($scope, $q, SiteService, CameraService) {
+    .controller('MainController', function ($scope, $q, $route, SiteService, CameraService) {
         function timeUpdate() {
             var index = this.playlist.currentIndex();
             var currentTime = this.currentTime();
@@ -9,8 +9,9 @@ angular.module("h5player")
             $scope.$apply();
         }
 
-        function changeSite() {
+        $scope.changeSite = function () {
             var siteId = $scope.siteList[$scope.selectedSite].site_id;
+            console.log(siteId);
             CameraService.getCameraList(siteId)
                 .then(function (data) {
                     $scope.cameraList = data;
@@ -72,15 +73,41 @@ angular.module("h5player")
                         }
                     })
                 })
-        }
+        };
 
+        $scope.changeMode = function () {
+            $scope.dimension = _.range($scope.selectedMode.value);
+            console.log(JSON.stringify($scope.dimension));
+            $route.reload();
+        };
+
+        //Model Data
         $scope.siteList = {};
         $scope.siteNames = [];
         $scope.selectedSite = '';
 
         $scope.cameraList = [];
 
-        $scope.dimension = _.range(3);
+        $scope.model = [
+            {
+                name: '1*1',
+                value: 1
+            },
+            {
+                name: '2*2',
+                value: 2
+            },
+            {
+                name: '3*3',
+                value: 3
+            },
+            {
+                name: '4*4',
+                value: 4
+            }
+        ];
+        $scope.selectedMode = $scope.model[0];
+        $scope.dimension = _.range($scope.selectedMode.value);
 
         $scope.playerData = [];
         $scope.videoPlayers = {};
@@ -113,7 +140,7 @@ angular.module("h5player")
                 .then(function () {
                     $scope.siteNames = Object.keys($scope.siteList);
                     $scope.selectedSite = $scope.siteNames[0];
-                    changeSite();
+                    $scope.changeSite();
                 })
         };
 

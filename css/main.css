@@ -66,6 +66,10 @@ ul.camera_checkbox li.focus {
     margin-right: 10px;
 }
 
+.mode_picker {
+    margin-right: 10px;
+}
+
 .video_table {
     width: 100%;
 }

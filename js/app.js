@@ -1,4 +1,4 @@
-angular.module("h5player", ['daterangepicker'])
+angular.module("h5player", ['daterangepicker', 'ngRoute'])
     .config(function ($sceDelegateProvider) {
         $sceDelegateProvider.resourceUrlWhitelist([
             // Allow same origin resource loads.

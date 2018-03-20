@@ -8,6 +8,7 @@
 
     <script src="lib/jquery/dist/jquery.min.js"></script>
     <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/angular-route/angular-route.min.js"></script>
     <script src="lib/moment/moment.js"></script>
     <script src="lib/lodash/lodash.js"></script>
     <script src="lib/bootstrap-daterangepicker/daterangepicker.js"></script>
@@ -42,17 +43,16 @@
         <div class="row video_setting">
             <div class="col-md-3 form-group">
                 <div class="date_picker">
-                    <label for="daterange1" class="control-label">Date picker</label>
-                    <input date-range-picker id="daterange1" name="daterange1" class="form-control date-picker"
+                    <label class="control-label">Date:</label>
+                    <input date-range-picker id="daterange1" name="daterange1" class="date-picker"
                            type="text" ng-model="date" required/>
                 </div>
             </div>
             <div class="col-md-3 form-group">
                 <div class="mode_picker">
-                    <label for="daterange2" class="control-label">Mode Selector</label>
-                    <input date-range-picker id="daterange2" name="daterange2" class="form-control date-picker"
-                           type="text"
-                           ng-model="date" required/>
+                    <label class="control-label">Mode:</label>
+                    <select class="mode_selector" ng-model="selectedMode" ng-options="m.name for m in model" ng-change="changeMode()">
+                    </select>
                 </div>
             </div>
             <div class="col-md-6 form-group">
