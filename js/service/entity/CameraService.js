@@ -22,6 +22,34 @@ angular.module("h5player")
             "uuid": "xxxx-xxxx-xxxx-xxxx"
         }*/
 
+        /*{
+            "cam_id": 1,
+            "site_id": 2,
+            "path": "/opt/ipcadm/nginx/html/raw_mp4/192.168.1.231/20180306/01",
+            "location": "/raw_mp4/192.168.1.231/20180306/01",
+            "err": "2:No such file or directory"
+            "timeline": [
+                {
+                    "path": "/opt/ipcadm/nginx/html/raw_mp4/192.168.1.231/20180306/01/300.mp4",
+                    "uri": "/raw_mp4/192.168.1.231/20180306/01/300.mp4",
+                    "start": 300,
+                    "duration": 10
+                },
+                {
+                    "path": "/opt/ipcadm/nginx/html/raw_mp4/192.168.1.231/20180306/01/0.mp4",
+                    "uri": "/raw_mp4/192.168.1.231/20180306/01/0.mp4",
+                    "start": 0,
+                    "duration": 10
+                },
+                {
+                    "path": "/opt/ipcadm/nginx/html/raw_mp4/192.168.1.231/20180306/01/60.mp4",
+                    "uri": "/raw_mp4/192.168.1.231/20180306/01/60.mp4",
+                    "start": 60,
+                    "duration": 10
+                }
+            ]
+        }*/
+
         return {
             getCameraList: function (siteId) {
                 var url = ServiceUrlConstant.CAMERA_LIST + '?site_id=' + siteId;
@@ -49,11 +77,27 @@ angular.module("h5player")
                         if (response.msg == 'success') {
                             return response.data;
                         } else {
-                            return [];
+                            return {};
                         }
                     })
                     .catch(function () {
-                        return [];
+                        return {};
+                    })
+            },
+
+            getCameraTimeline: function (siteId, cameraId, date) {
+                var url = ServiceUrlConstant.CAMERA_TIMELINE + '?cam_id=' + cameraId + '&site_id=' + siteId + '&date=' + date;
+
+                return DataAccessService.get(url)
+                    .then(function (response) {
+                        if (response.msg == 'success') {
+                            return response.data;
+                        } else {
+                            return {};
+                        }
+                    })
+                    .catch(function () {
+                        return {};
                     })
             }
         }

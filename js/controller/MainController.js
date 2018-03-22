@@ -88,7 +88,7 @@ angular.module("h5player")
 
         $scope.cameraList = [];
 
-        $scope.model = [
+        $scope.playerMode = [
             {
                 name: '1*1',
                 value: 1
@@ -106,16 +106,48 @@ angular.module("h5player")
                 value: 4
             }
         ];
-        $scope.selectedMode = $scope.model[0];
+        $scope.selectedMode = $scope.playerMode[0];
         $scope.dimension = _.range($scope.selectedMode.value);
 
         $scope.playerData = [];
         $scope.videoPlayers = {};
 
-        $scope.date = {
-            startDate: moment().subtract(1, "days"),
-            endDate: moment()
-        };
+        $scope.selectedDate = moment();
+        $scope.playerTime = [
+            {
+                name: '0h',
+                value: '00'
+            },
+            {
+                name: '1h',
+                value: '01'
+            },
+            {
+                name: '2h',
+                value: '02'
+            },
+            {
+                name: '3h',
+                value: '03'
+            },
+            {
+                name: '4h',
+                value: '04'
+            },
+            {
+                name: '5h',
+                value: '05'
+            },
+            {
+                name: '6h',
+                value: '06'
+            },
+            {
+                name: '7h',
+                value: '07'
+            }
+        ];
+        $scope.selectedTime = $scope.playerTime[0];
 
         $scope.refresh = function (player) {
             console.log($scope.videoPlayers[player.id]);

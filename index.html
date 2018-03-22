@@ -41,21 +41,30 @@
 
     <form name="mainForm" class="form-horizontal">
         <div class="row video_setting">
-            <div class="col-md-3 form-group">
+            <div class="col-xs-3 form-group">
                 <div class="date_picker">
-                    <label class="control-label">Date:</label>
-                    <input date-range-picker id="daterange1" name="daterange1" class="date-picker"
-                           type="text" ng-model="date" required/>
+                    <label class="control-label" for="daterange1">Date:</label>
+                    <input date-range-picker id="daterange1" name="daterange1" class="date-picker" type="text"
+                           options="{singleDatePicker: true}" ng-model="selectedDate" required/>
                 </div>
             </div>
-            <div class="col-md-3 form-group">
-                <div class="mode_picker">
+            <div class="col-xs-2 form-group">
+                <div class="time_picker">
                     <label class="control-label">Mode:</label>
-                    <select class="mode_selector" ng-model="selectedMode" ng-options="m.name for m in model" ng-change="changeMode()">
+                    <select class="time_selector" ng-model="selectedTime" ng-options="t.name for t in playerTime"
+                            ng-change="changeMode()">
                     </select>
                 </div>
             </div>
-            <div class="col-md-6 form-group">
+            <div class="col-xs-3 form-group">
+            </div>
+            <div class="col-xs-2 form-group">
+                <div class="mode_picker">
+                    <label class="control-label">Mode:</label>
+                    <select class="mode_selector" ng-model="selectedMode" ng-options="m.name for m in playerMode"
+                            ng-change="changeMode()">
+                    </select>
+                </div>
             </div>
         </div>
         <div class="form-group video_area">

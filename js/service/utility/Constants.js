@@ -3,4 +3,5 @@ angular.module('h5player')
         SITE_LIST: 'site_list',
         CAMERA_LIST: 'cam_list',
         CAMERA_INFO: 'cam_info',
+        CAMERA_TIMELINE: 'cam_timeline'
     });
