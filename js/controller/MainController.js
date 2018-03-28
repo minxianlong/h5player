@@ -81,6 +81,10 @@ angular.module("h5player")
             $route.reload();
         };
 
+        $scope.changeTime = function () {
+
+        };
+
         //Model Data
         $scope.siteList = {};
         $scope.siteNames = [];

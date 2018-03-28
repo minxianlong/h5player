@@ -27,6 +27,7 @@
 <body>
 
 <div class="side_nav">
+    <h2>Video Monitor</h2>
     <select class="site_selector" ng-model="selectedSite" ng-options="x for x in siteNames" ng-change="changeSite()">
     </select>
     <ul class="camera_checkbox">
@@ -37,8 +38,6 @@
 </div>
 
 <div class="main_area">
-    <h2>Video Monitor</h2>
-
     <form name="mainForm" class="form-horizontal">
         <div class="row video_setting">
             <div class="col-xs-3 form-group">
@@ -50,9 +49,9 @@
             </div>
             <div class="col-xs-2 form-group">
                 <div class="time_picker">
-                    <label class="control-label">Mode:</label>
+                    <label class="control-label">Hour:</label>
                     <select class="time_selector" ng-model="selectedTime" ng-options="t.name for t in playerTime"
-                            ng-change="changeMode()">
+                            ng-change="changeTime()">
                     </select>
                 </div>
             </div>
