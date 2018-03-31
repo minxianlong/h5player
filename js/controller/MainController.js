@@ -9,46 +9,46 @@ angular.module("h5player")
             $scope.$apply();
         }
 
+        function refreshPlayData() {
+            $scope.playerData = [];
+
+            return $scope.cameraList.forEach(function (camera) {
+                if(camera.visible) {
+                    $scope.playerData.push(
+                        {
+                            id: 'cam_' + camera.id,
+                            name: camera.name,
+                            visible: true,
+                            playlist: [{
+                                sources: [{
+                                    src: 'res/1.mp4',
+                                    type: 'video/mp4'
+                                }]
+                            }, {
+                                sources: [{
+                                    src: 'res/2.mp4',
+                                    type: 'video/mp4'
+                                }]
+                            }, {
+                                sources: [{
+                                    src: 'res/3.mp4',
+                                    type: 'video/mp4'
+                                }]
+                            }],
+                            width: '0%'
+                        }
+                    )
+                }
+            });
+        }
+
         $scope.changeSite = function () {
             var siteId = $scope.siteList[$scope.selectedSite].site_id;
             console.log(siteId);
             CameraService.getCameraList(siteId)
                 .then(function (data) {
                     $scope.cameraList = data;
-                    var camInfoPromise = [];
-                    $scope.cameraList.forEach(function (camera) {
-                        camInfoPromise.push(CameraService.getCameraInfo(siteId, camera.id))
-                    });
-
-                    return $q.all(camInfoPromise);
-                })
-                .then(function (camInfoArray) {
-                    camInfoArray.forEach(function (camInfo) {
-                        $scope.playerData.push(
-                            {
-                                id: 'cam_' + camInfo.cam_id,
-                                name: camInfo.name,
-                                visible: true,
-                                playlist: [{
-                                    sources: [{
-                                        src: 'res/1.mp4',
-                                        type: 'video/mp4'
-                                    }]
-                                }, {
-                                    sources: [{
-                                        src: 'res/2.mp4',
-                                        type: 'video/mp4'
-                                    }]
-                                }, {
-                                    sources: [{
-                                        src: 'res/3.mp4',
-                                        type: 'video/mp4'
-                                    }]
-                                }],
-                                width: '0%'
-                            }
-                        )
-                    });
+                    return refreshPlayData();
                 })
                 .then(function () {
                     $(document).ready(function () {

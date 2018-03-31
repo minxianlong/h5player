@@ -10,6 +10,11 @@
     padding-top: 20px;
 }
 
+.side_nav h4 {
+    margin-left: 5px;
+    color: #ffffff;
+}
+
 @media screen and (max-height: 450px) {
     .side_nav {
         padding-top: 15px;
@@ -81,10 +86,11 @@ ul.camera_checkbox li.focus {
 
 .video_seekbar {
     cursor: pointer;
-    height: 5px;
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    height: 6px;
+    width: 100%;
+    margin: auto;
+    margin-left: 15px;
+    margin-top: 10px;
     outline: thin solid orange;
     overflow: hidden;
     position: relative;
