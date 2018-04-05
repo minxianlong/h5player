@@ -1,5 +1,6 @@
 angular.module("h5player")
     .controller('MainController', function ($scope, $q, $route, SiteService, CameraService) {
+        //Help functions
         function timeUpdate() {
             var index = this.playlist.currentIndex();
             var currentTime = this.currentTime();
@@ -13,7 +14,7 @@ angular.module("h5player")
             $scope.playerData = [];
 
             return $scope.cameraList.forEach(function (camera) {
-                if(camera.visible) {
+                if (camera.visible) {
                     $scope.playerData.push(
                         {
                             id: 'cam_' + camera.id,
@@ -42,12 +43,18 @@ angular.module("h5player")
             });
         }
 
+        function selectMode() {
+
+        }
+
+        //Event functions
         $scope.changeSite = function () {
-            var siteId = $scope.siteList[$scope.selectedSite].site_id;
-            console.log(siteId);
+            var siteId = $scope.selectedSite.site_id;
+
             CameraService.getCameraList(siteId)
                 .then(function (data) {
                     $scope.cameraList = data;
+
                     return refreshPlayData();
                 })
                 .then(function () {
@@ -75,6 +82,18 @@ angular.module("h5player")
                 })
         };
 
+        $scope.changeCamera = function (camera) {
+            if (camera) {
+                if (camera.visible) {
+                    $scope.videoPlayers[camera.id].play();
+                }
+                else {
+                    $scope.videoPlayers[camera.id].pause();
+                }
+
+            }
+        };
+
         $scope.changeMode = function () {
             $scope.dimension = _.range($scope.selectedMode.value);
             console.log(JSON.stringify($scope.dimension));
@@ -85,29 +104,33 @@ angular.module("h5player")
 
         };
 
+
         //Model Data
         $scope.siteList = {};
-        $scope.siteNames = [];
-        $scope.selectedSite = '';
+        $scope.selectedSite = {};
 
         $scope.cameraList = [];
 
         $scope.playerMode = [
             {
                 name: '1*1',
-                value: 1
+                value: 1,
+                active: true
             },
             {
                 name: '2*2',
-                value: 2
+                value: 2,
+                active: true
             },
             {
                 name: '3*3',
-                value: 3
+                value: 3,
+                active: true
             },
             {
                 name: '4*4',
-                value: 4
+                value: 4,
+                active: true
             }
         ];
         $scope.selectedMode = $scope.playerMode[0];
@@ -153,18 +176,6 @@ angular.module("h5player")
         ];
         $scope.selectedTime = $scope.playerTime[0];
 
-        $scope.refresh = function (player) {
-            console.log($scope.videoPlayers[player.id]);
-            if (player) {
-                if (player.visible) {
-                    $scope.videoPlayers[player.id].play();
-                }
-                else {
-                    $scope.videoPlayers[player.id].pause();
-                }
-
-            }
-        };
 
         $scope.load = function () {
             SiteService.getSiteList()
@@ -174,8 +185,8 @@ angular.module("h5player")
                     })
                 })
                 .then(function () {
-                    $scope.siteNames = Object.keys($scope.siteList);
-                    $scope.selectedSite = $scope.siteNames[0];
+                    var siteNames = Object.keys($scope.siteList);
+                    $scope.selectedSite = $scope.siteList[siteNames[0]];
                     $scope.changeSite();
                 })
         };

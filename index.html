@@ -28,11 +28,12 @@
 
 <div class="side_nav">
     <h4>Video Monitor</h4>
-    <select class="site_selector" ng-model="selectedSite" ng-options="x for x in siteNames" ng-change="changeSite()">
+    <select class="site_selector" ng-model="selectedSite" ng-options="x.name for x in siteList" ng-change="changeSite()">
     </select>
     <ul class="camera_checkbox">
         <li ng-repeat="camera in cameraList">
-            <input type="checkbox" ng-model="camera.visible" ng-change="refresh(camera)"/><label>{{camera.name}}</label>
+            <input type="checkbox" ng-model="camera.visible"
+                   ng-change="changeCamera(camera)"/><label>{{camera.name}}</label>
         </li>
     </ul>
 </div>
@@ -60,7 +61,8 @@
             <div class="col-xs-2 form-group">
                 <div class="mode_picker">
                     <label class="control-label">Mode:</label>
-                    <select class="mode_selector" ng-model="selectedMode" ng-options="m.name for m in playerMode"
+                    <select class="mode_selector" ng-model="selectedMode"
+                            ng-options="m.name for m in playerMode | filter: {active: true}"
                             ng-change="changeMode()">
                     </select>
                 </div>

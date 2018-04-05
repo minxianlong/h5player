@@ -1,0 +1,90 @@
+Web player
+================================
+1: Page Layout
+The page layout is described as below. There are 4 parts on the page:
+Left-Top: system name
+Right-Top: Date/time picker, video layout picker
+Left-Bottom: Site/camera list and picker
+Right-Bottom: Video players
+  +---------+-------------------------------------------------------------------------------+
+  |A:SysName|B:Date/Hour Selection                                               C:1 4 9 16 |
+  |---------+-------------------------------------------------------------------------------+
+  |D:Site01 |+E:Timeline Bar---------------------------------------------------------------+|
+  | +Cam01  |+-----------------+ +-----------------+ +-----------------+ +-----------------+|
+  | +Cam02  ||F:Player         | |                 | |                 | |                 ||
+  | +Cam03  ||                 | |                 | |                 | |                 ||
+  | +Cam04  ||                 | |                 | |                 | |                 ||
+  | +Cam05  ||                 | |                 | |                 | |                 ||
+  | +Cam06  |+-----------------+ +-----------------+ +-----------------+ +-----------------+|
+  | +Cam07  |+-----------------+ +-----------------+ +-----------------+ +-----------------+|
+  | +Cam08  ||                 | |                 | |                 | |                 ||
+  | +Cam09  ||                 | |                 | |                 | |                 ||
+  | +Cam10  ||                 | |                 | |                 | |                 ||
+  | +Cam11  ||                 | |                 | |                 | |                 ||
+  | +Cam12  |+-----------------+ +-----------------+ +-----------------+ +-----------------+|
+  | +Cam13  |+-----------------+ +-----------------+ +-----------------+ +-----------------+|
+  | +Cam14  ||                 | |                 | |                 | |                 ||
+  | +Cam15  ||                 | |                 | |                 | |                 ||
+  | +Cam16  ||                 | |                 | |                 | |                 ||
+  | +Cam17  ||                 | |                 | |                 | |                 ||
+  | +Cam18  |+-----------------+ +-----------------+ +-----------------+ +-----------------+|
+  | +Cam19  |+-----------------+ +-----------------+ +-----------------+ +-----------------+|
+  | +Cam20  ||                 | |                 | |                 | |                 ||
+  | +Cam21  ||                 | |                 | |                 | |                 ||
+  | +Cam22  ||                 | |                 | |                 | |                 ||
+  | +Cam23  ||                 | |                 | |                 | |                 ||
+  | +Cam24  |+-----------------+ +-----------------+ +-----------------+ +-----------------+|
+  +---------+-------------------------------------------------------------------------------+
+
+2: Page Component
+================================
+There are 6 major page components on the page:
+  A: System Name, hard code to "Video monitor", ipcadm will provide an API to get system name later.
+  B: Date/Hour Selection. Selete Date (YYYY-MM-DD, 2018/01/01~TODAY, default value is TODAY) and Hour (HH, 0~23, default value is 0).
+  C: Video player layout selection. Select video player layout (4 icons, 1:1*1, 4:2*2, 9:3*3, 16:4*4, default is 1:1*1)
+  D: Site/Cam list. Display a 2-level tree. First level is site, second level is camera. Check box on each camera.
+  E: Timeline bar. Present Minute/Second in current Hour (mm:SS, 00:00~60:00). 
+  F: Video Player. The H5 video player.
+
+3: Page input variables
+================================
+Page should maintain 3 variables which can be inputted/selected by the user:
+  A: Date/Time. The current date/time for video playback.
+  B: Video layout. The selected video layout. Determine the length of selected camera list.
+  C: Selected camera list. The video for these camera will be played on the page.
+
+4: Page other variables
+================================
+Page should also maintain the following variables to display the page or play the video
+  A: site, camera list. To display the site/camera list on left-bottom, fetch from nginx site_list and cam_list API.
+  B: timeline for each camera or at least for selected camera, fetch from nginx cam_timeline API.
+  C: H5 player controls and the play list for each player. One H5 player is mapped to 1 selected camera.
+
+4: Page Control and Action
+================================
+  A: Change Date/Time. Change date by date picker, hour by hour selector, minute/second by timeline bar.
+     When date/time is changed, flush play list for each H5 player play list, fetch new timeline for selected cameras if needed, add new video files to H5 player play list.
+  B: Add camera. Add camera by checking the camera box in camera list.
+     When a camera is added, search the H5 player controls list and find an empty H5 player, map this camera to that H5 player. If no empty H5 player is found, alert the user to uncheck a camera at first.
+  C: Remove camera. Remove camera by unchecking the camera box in camera list.
+     When a camera is removed, search the H5 player controls list and find the H5 player of this camera, flush the play list and clean the data of this H5 player.
+  D: Increase playbacks by clicking video layout icons.
+     Adjust the layout, increase the length of selected camera list, increase the length of H5 player list, clean the data of added selected camera list and H5 player list.
+  E: Decrease playbacks by clicking video layout icons.
+     Adjust the layout, decrease the length of selected camera list, decrease the length of H5 player list, clean the data of removed selected camera list and H5 player list.
+  F: (Not sure if this will cause too many CPU usage) Timer callback every 1 second and do:
+     Display the mm:SS on timeline bar, update the indicator on timeline bar
+     Check timeline for each selected camera, fetch new timeline information if needed
+     Check each H5 player playlist, add new viedo files if needed
+
+5: Attentions
+================================
+  A: make sure the playback is smooth when the whole hour or day passed. Need to fetch the timeline and cache the video data ahead
+  B: minimize the spacing between H5 player controls
+
+Questions:
+================================
+  A: display the availability of video record in a pop-up layer or another standalone page?
+  B: when the video record for a selected camera is missing, how is it managed till the video record is available again?
+  C: One timeline bar for all H5 players or each H5 player has one timeline bar?
+
