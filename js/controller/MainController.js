@@ -10,11 +10,18 @@ angular.module("h5player")
             $scope.$apply();
         }
 
+        function setMode() {
+            var length = $scope.cameraList.length;
+
+        }
+
         function refreshPlayData() {
             $scope.playerData = [];
 
-            return $scope.cameraList.forEach(function (camera) {
+            var playerCnt = 0;
+            $scope.cameraList.forEach(function (camera) {
                 if (camera.visible) {
+                    playerCnt++;
                     $scope.playerData.push(
                         {
                             id: 'cam_' + camera.id,
@@ -41,6 +48,25 @@ angular.module("h5player")
                     )
                 }
             });
+
+            var total = $scope.selectedMode.value * $scope.selectedMode.value;
+            while (playerCnt < total) {
+                playerCnt++;
+                $scope.playerData.push(
+                    {
+                        id: 'cam_unknown_' + playerCnt,
+                        name: 'Unknown Camera',
+                        visible: true,
+                        playlist: [{
+                            sources: [{
+                                src: 'res/1.mp4',
+                                type: 'video/mp4'
+                            }]
+                        }],
+                        width: '0%'
+                    }
+                )
+            }
         }
 
         function selectMode() {
@@ -96,7 +122,6 @@ angular.module("h5player")
 
         $scope.changeMode = function () {
             $scope.dimension = _.range($scope.selectedMode.value);
-            console.log(JSON.stringify($scope.dimension));
             $route.reload();
         };
 
@@ -133,7 +158,7 @@ angular.module("h5player")
                 active: true
             }
         ];
-        $scope.selectedMode = $scope.playerMode[0];
+        $scope.selectedMode = $scope.playerMode[3];
         $scope.dimension = _.range($scope.selectedMode.value);
 
         $scope.playerData = [];
