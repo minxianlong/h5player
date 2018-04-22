@@ -10,11 +10,6 @@ angular.module("h5player")
             $scope.$apply();
         }
 
-        function setMode() {
-            var length = $scope.cameraList.length;
-
-        }
-
         function refreshPlayData() {
             $scope.playerData = [];
 
@@ -49,14 +44,14 @@ angular.module("h5player")
                 }
             });
 
-            var total = $scope.selectedMode.value * $scope.selectedMode.value;
-            while (playerCnt < total) {
+            //The total is 16 now
+            while (playerCnt < 16) {
                 playerCnt++;
                 $scope.playerData.push(
                     {
                         id: 'cam_unknown_' + playerCnt,
                         name: 'Unknown Camera',
-                        visible: true,
+                        visible: false,
                         playlist: [{
                             sources: [{
                                 src: 'res/1.mp4',
@@ -67,6 +62,33 @@ angular.module("h5player")
                     }
                 )
             }
+        }
+
+        function refreshVideoPlayer() {
+            $scope.videoPlayers = {};
+
+            var total = $scope.selectedMode.value * $scope.selectedMode.value;
+            $(document).ready(function () {
+                for (var i = 0; i < total; i++) {
+                    var id = $scope.playerData[i].id;
+                    var player = videojs(id, {
+                        controls: false,
+                        autoplay: false,
+                        loop: false,
+                        preload: 'auto'
+                    });
+
+                    player.playData = $scope.playerData[i];
+                    player.playlist($scope.playerData[i].playlist);
+                    player.playlist.autoadvance(0);
+                    player.on("timeupdate", timeUpdate);
+                    $scope.videoPlayers[$scope.playerData[i].id] = player;
+
+                    if ($scope.playerData[i].visible) {
+                        player.play();
+                    }
+                }
+            })
         }
 
         function selectMode() {
@@ -84,39 +106,14 @@ angular.module("h5player")
                     return refreshPlayData();
                 })
                 .then(function () {
-                    $(document).ready(function () {
-                        for (var i = 0; i < $scope.playerData.length; i++) {
-                            var id = $scope.playerData[i].id;
-                            var player = videojs(id, {
-                                controls: false,
-                                autoplay: false,
-                                loop: false,
-                                preload: 'auto'
-                            });
-
-                            player.playData = $scope.playerData[i];
-                            player.playlist($scope.playerData[i].playlist);
-                            player.playlist.autoadvance(0);
-                            player.on("timeupdate", timeUpdate);
-                            $scope.videoPlayers[$scope.playerData[i].id] = player;
-
-                            if ($scope.playerData[i].visible) {
-                                player.play();
-                            }
-                        }
-                    })
+                    return refreshVideoPlayer();
                 })
         };
 
         $scope.changeCamera = function (camera) {
             if (camera) {
-                if (camera.visible) {
-                    $scope.videoPlayers[camera.id].play();
-                }
-                else {
-                    $scope.videoPlayers[camera.id].pause();
-                }
-
+                refreshPlayData();
+                refreshVideoPlayer();
             }
         };
 
