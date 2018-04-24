@@ -30,12 +30,15 @@ angular.module("h5player")
                                     width: '0%'
                                 };
 
-                                playData.playlist.push({
-                                    sources: [{
-                                        src: 'http://192.168.0.13/raw_mp4/192.168.1.231/20180306/01/0.mp4',
-                                        //src: 'res/0.mp4',
-                                        type: 'video/mp4'
-                                    }]
+                                console.log(data);
+                                data.forEach(function (path) {
+
+                                    playData.playlist.push({
+                                        sources: [{
+                                            src: path,
+                                            type: 'video/mp4'
+                                        }]
+                                    });
                                 });
 
                                 $scope.playerData.push(playData);

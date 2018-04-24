@@ -1,5 +1,5 @@
 angular.module("h5player")
-    .factory('CameraService', function (DataAccessService, ServiceUrlConstant) {
+    .factory('CameraService', function (DataAccessService, ServiceUrlConstant, DomainService) {
         /*
          { "site_id":0, "cam_list" : [
          { "id": 0, "name":"192.168.1.230", "desc":"192.168.1.230", "state":0 },
@@ -90,18 +90,21 @@ angular.module("h5player")
 
                 return DataAccessService.get(url)
                     .then(function (response) {
+                        console.log('aaa' + JSON.stringify(response));
                         if (response.msg == 'success') {
                             var data = [];
                             response.data.timeline.forEach(function (timeline) {
-                                data.push('./' + location + '/' + timeline.start + '.mp4')
+                                data.push(DomainService.getBaseUrl + location + '/' + timeline.start + '.mp4')
                             });
+
                             return data;
                         } else {
-                            return {};
+                            return [];
                         }
                     })
-                    .catch(function () {
-                        return {};
+                    .catch(function (err) {
+                        console.log('aaa' + JSON.stringify(err));
+                        return [];
                     })
             }
         }
