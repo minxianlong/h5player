@@ -28,7 +28,8 @@
 
 <div class="side_nav">
     <h4>Video Monitor</h4>
-    <select class="site_selector" ng-model="selectedSite" ng-options="x.name for x in siteList" ng-change="changeSite()">
+    <select class="site_selector" ng-model="selectedSite" ng-options="x.name for x in siteList"
+            ng-change="changeSite()">
     </select>
     <ul class="camera_checkbox">
         <li ng-repeat="camera in cameraList">

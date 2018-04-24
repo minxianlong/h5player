@@ -11,57 +11,60 @@ angular.module("h5player")
         }
 
         function refreshPlayData() {
+            var siteId = $scope.selectedSite.site_id;
             $scope.playerData = [];
 
             var playerCnt = 0;
+            var promise = [];
             $scope.cameraList.forEach(function (camera) {
                 if (camera.visible) {
                     playerCnt++;
-                    $scope.playerData.push(
-                        {
-                            id: 'cam_' + camera.id,
-                            name: camera.name,
-                            visible: true,
-                            playlist: [{
-                                sources: [{
-                                    src: 'res/1.mp4',
-                                    type: 'video/mp4'
-                                }]
-                            }, {
-                                sources: [{
-                                    src: 'res/2.mp4',
-                                    type: 'video/mp4'
-                                }]
-                            }, {
-                                sources: [{
-                                    src: 'res/3.mp4',
-                                    type: 'video/mp4'
-                                }]
-                            }],
-                            width: '0%'
-                        }
+
+                    promise.push(CameraService.getCameraTimeline(siteId, camera.id, '2018030601')
+                            .then(function (data) {
+                                var playData = {
+                                    id: 'cam_' + camera.id,
+                                    name: camera.name,
+                                    visible: true,
+                                    playlist: [],
+                                    width: '0%'
+                                };
+
+                                playData.playlist.push({
+                                    sources: [{
+                                        src: 'http://192.168.0.13/raw_mp4/192.168.1.231/20180306/01/0.mp4',
+                                        //src: 'res/0.mp4',
+                                        type: 'video/mp4'
+                                    }]
+                                });
+
+                                $scope.playerData.push(playData);
+                            })
                     )
                 }
             });
 
-            //The total is 16 now
-            while (playerCnt < 16) {
-                playerCnt++;
-                $scope.playerData.push(
-                    {
-                        id: 'cam_unknown_' + playerCnt,
-                        name: 'Unknown Camera',
-                        visible: false,
-                        playlist: [{
-                            sources: [{
-                                src: 'res/1.mp4',
-                                type: 'video/mp4'
-                            }]
-                        }],
-                        width: '0%'
+            return $q.all(promise)
+                .then(function () {
+                    //The total is 16 now
+                    while (playerCnt < 16) {
+                        playerCnt++;
+                        $scope.playerData.push(
+                            {
+                                id: 'cam_unknown_' + playerCnt,
+                                name: 'Unknown Camera',
+                                visible: false,
+                                playlist: [{
+                                    sources: [{
+                                        src: 'res/1.mp4',
+                                        type: 'video/mp4'
+                                    }]
+                                }],
+                                width: '0%'
+                            }
+                        )
                     }
-                )
-            }
+                })
         }
 
         function refreshVideoPlayer() {
@@ -91,10 +94,6 @@ angular.module("h5player")
             })
         }
 
-        function selectMode() {
-
-        }
-
         //Event functions
         $scope.changeSite = function () {
             var siteId = $scope.selectedSite.site_id;
@@ -112,8 +111,10 @@ angular.module("h5player")
 
         $scope.changeCamera = function (camera) {
             if (camera) {
-                refreshPlayData();
-                refreshVideoPlayer();
+                refreshPlayData()
+                    .then(function () {
+                        refreshVideoPlayer();
+                    })
             }
         };
 
