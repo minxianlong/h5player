@@ -57,7 +57,7 @@ angular.module("h5player")
                     .then(function (response) {
                         if (response.msg == 'success') {
                             response.data.cam_list.forEach(function (camera) {
-                                camera.visible = true;
+                                camera.visible = false;
                             });
                             return response.data.cam_list;
                         } else {
@@ -90,12 +90,12 @@ angular.module("h5player")
 
                 return DataAccessService.get(url)
                     .then(function (response) {
-                        console.log('aaa' + JSON.stringify(response));
                         if (response.msg == 'success') {
                             var data = [];
                             response.data.timeline.forEach(function (timeline) {
-                                data.push(DomainService.getBaseUrl + location + '/' + timeline.start + '.mp4')
+                                data.push(DomainService.getBaseUrl() + response.data.location + '/' + timeline.start + '.mp4')
                             });
+
 
                             return data;
                         } else {

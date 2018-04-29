@@ -34,7 +34,7 @@
     <ul class="camera_checkbox">
         <li ng-repeat="camera in cameraList">
             <input type="checkbox" ng-model="camera.visible"
-                   ng-change="changeCamera(camera)"/><label>{{camera.name}}</label>
+                   ng-change="changeCamera(camera)" ng-disabled="cameraSelDisable && !camera.visible"/><label>{{camera.name}}</label>
         </li>
     </ul>
 </div>

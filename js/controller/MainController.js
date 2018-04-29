@@ -10,6 +10,18 @@ angular.module("h5player")
             $scope.$apply();
         }
 
+
+        function refreshCamera() {
+            var total = $scope.selectedMode.value * $scope.selectedMode.value;
+            var count = 0;
+            $scope.cameraList.forEach(function (camera) {
+                if (camera.visible)
+                    count++;
+            });
+
+            $scope.cameraSelDisable = (count >= total);
+        }
+
         function refreshPlayData() {
             var siteId = $scope.selectedSite.site_id;
             $scope.playerData = [];
@@ -21,36 +33,36 @@ angular.module("h5player")
                     playerCnt++;
 
                     promise.push(CameraService.getCameraTimeline(siteId, camera.id, '2018030601')
-                            .then(function (data) {
-                                var playData = {
-                                    id: 'cam_' + camera.id,
-                                    name: camera.name,
-                                    visible: true,
-                                    playlist: [],
-                                    width: '0%'
-                                };
+                        .then(function (data) {
+                            var playData = {
+                                id: 'cam_' + camera.id,
+                                name: camera.name,
+                                visible: true,
+                                playlist: [],
+                                width: '0%'
+                            };
 
-                                console.log(data);
-                                data.forEach(function (path) {
-
-                                    playData.playlist.push({
-                                        sources: [{
-                                            src: path,
-                                            type: 'video/mp4'
-                                        }]
-                                    });
+                            console.log('siteId=' + siteId + 'cameraId=' + camera.id + 'data=' + JSON.stringify(data));
+                            data.forEach(function (path) {
+                                playData.playlist.push({
+                                    sources: [{
+                                        src: path,
+                                        type: 'video/mp4'
+                                    }]
                                 });
+                            });
 
-                                $scope.playerData.push(playData);
-                            })
+                            $scope.playerData.push(playData);
+                        })
                     )
                 }
             });
 
             return $q.all(promise)
                 .then(function () {
-                    //The total is 16 now
-                    while (playerCnt < 16) {
+                    var total = $scope.selectedMode.value * $scope.selectedMode.value;
+
+                    while (playerCnt < total) {
                         playerCnt++;
                         $scope.playerData.push(
                             {
@@ -104,16 +116,13 @@ angular.module("h5player")
             CameraService.getCameraList(siteId)
                 .then(function (data) {
                     $scope.cameraList = data;
-
-                    return refreshPlayData();
-                })
-                .then(function () {
-                    return refreshVideoPlayer();
                 })
         };
 
         $scope.changeCamera = function (camera) {
             if (camera) {
+                refreshCamera();
+
                 refreshPlayData()
                     .then(function () {
                         refreshVideoPlayer();
@@ -136,6 +145,7 @@ angular.module("h5player")
         $scope.selectedSite = {};
 
         $scope.cameraList = [];
+        $scope.cameraSelDisable = false;
 
         $scope.playerMode = [
             {
@@ -159,7 +169,7 @@ angular.module("h5player")
                 active: true
             }
         ];
-        $scope.selectedMode = $scope.playerMode[3];
+        $scope.selectedMode = $scope.playerMode[1];
         $scope.dimension = _.range($scope.selectedMode.value);
 
         $scope.playerData = [];
