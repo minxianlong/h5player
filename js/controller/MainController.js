@@ -59,7 +59,7 @@ angular.module("h5player")
             });
 
             return $q.all(promise)
-                .then(function () {
+                /*.then(function () {
                     var total = $scope.selectedMode.value * $scope.selectedMode.value;
 
                     while (playerCnt < total) {
@@ -79,15 +79,14 @@ angular.module("h5player")
                             }
                         )
                     }
-                })
+                })*/
         }
 
         function refreshVideoPlayer() {
             $scope.videoPlayers = {};
-
-            var total = $scope.selectedMode.value * $scope.selectedMode.value;
+            
             $(document).ready(function () {
-                for (var i = 0; i < total; i++) {
+                for (var i = 0; i < $scope.playerData.length; i++) {
                     var id = $scope.playerData[i].id;
                     var player = videojs(id, {
                         controls: false,
