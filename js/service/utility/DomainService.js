@@ -1,6 +1,6 @@
 angular.module('h5player')
     .factory('DomainService', function () {
-        var server = '172.16.215.128';
+        var server = '172.16.215.132';
         var domain = 'ipcadm_demo';
 
         return {

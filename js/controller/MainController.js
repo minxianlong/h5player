@@ -32,7 +32,9 @@ angular.module("h5player")
                 if (camera.visible) {
                     playerCnt++;
 
-                    promise.push(CameraService.getCameraTimeline(siteId, camera.id, '2018030601')
+                    console.log($scope.selectedDate, $scope.selectedTime);
+                    var date = $scope.selectedDate.format('YYYYMMDD') + $scope.selectedTime.value;
+                    promise.push(CameraService.getCameraTimeline(siteId, camera.id, date)
                         .then(function (data) {
                             var playData = {
                                 id: 'cam_' + camera.id,
@@ -58,33 +60,12 @@ angular.module("h5player")
                 }
             });
 
-            return $q.all(promise)
-                /*.then(function () {
-                    var total = $scope.selectedMode.value * $scope.selectedMode.value;
-
-                    while (playerCnt < total) {
-                        playerCnt++;
-                        $scope.playerData.push(
-                            {
-                                id: 'cam_unknown_' + playerCnt,
-                                name: 'Unknown Camera',
-                                visible: false,
-                                playlist: [{
-                                    sources: [{
-                                        src: 'res/1.mp4',
-                                        type: 'video/mp4'
-                                    }]
-                                }],
-                                width: '0%'
-                            }
-                        )
-                    }
-                })*/
+            return $q.all(promise);
         }
 
         function refreshVideoPlayer() {
             $scope.videoPlayers = {};
-            
+
             $(document).ready(function () {
                 for (var i = 0; i < $scope.playerData.length; i++) {
                     var id = $scope.playerData[i].id;
@@ -110,9 +91,7 @@ angular.module("h5player")
 
         //Event functions
         $scope.changeSite = function () {
-            var siteId = $scope.selectedSite.site_id;
-
-            CameraService.getCameraList(siteId)
+            CameraService.getCameraList($scope.selectedSite)
                 .then(function (data) {
                     $scope.cameraList = data;
                 })
@@ -135,7 +114,10 @@ angular.module("h5player")
         };
 
         $scope.changeTime = function () {
-
+            refreshPlayData()
+                .then(function () {
+                    refreshVideoPlayer();
+                })
         };
 
 
@@ -207,6 +189,22 @@ angular.module("h5player")
             {
                 name: '7h',
                 value: '07'
+            },
+            {
+                name: '8h',
+                value: '08'
+            },
+            {
+                name: '9h',
+                value: '09'
+            },
+            {
+                name: '10h',
+                value: '10'
+            },
+            {
+                name: '11h',
+                value: '11'
             }
         ];
         $scope.selectedTime = $scope.playerTime[0];

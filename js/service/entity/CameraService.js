@@ -51,9 +51,10 @@ angular.module("h5player")
          }*/
 
         return {
-            getCameraList: function (siteId) {
-                var url = ServiceUrlConstant.CAMERA_LIST + '?site_id=' + siteId;
-                return DataAccessService.get(url)
+            getCameraList: function (site) {
+                console.log(site);
+                var url = ServiceUrlConstant.CAMERA_LIST + '?site_id=' + site.site_id;
+                return DataAccessService.get(url, {useDomainUrl: true})
                     .then(function (response) {
                         if (response.msg == 'success') {
                             response.data.cam_list.forEach(function (camera) {
@@ -68,27 +69,10 @@ angular.module("h5player")
                         return [];
                     })
             },
-
-            getCameraInfo: function (siteId, cameraId) {
-                var url = ServiceUrlConstant.CAMERA_INFO + '?cam_id=' + cameraId + '&site_id=' + siteId;
-
-                return DataAccessService.get(url)
-                    .then(function (response) {
-                        if (response.msg == 'success') {
-                            return response.data;
-                        } else {
-                            return {};
-                        }
-                    })
-                    .catch(function () {
-                        return {};
-                    })
-            },
-
             getCameraTimeline: function (siteId, cameraId, date) {
                 var url = ServiceUrlConstant.CAMERA_TIMELINE + '?cam_id=' + cameraId + '&site_id=' + siteId + '&date=' + date;
 
-                return DataAccessService.get(url)
+                return DataAccessService.get(url, {useDomainUrl: true})
                     .then(function (response) {
                         if (response.msg == 'success') {
                             var data = [];

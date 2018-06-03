@@ -22,7 +22,7 @@ angular.module("h5player")
 
         return {
             getSiteList: function () {
-                return DataAccessService.get(ServiceUrlConstant.SITE_LIST)
+                return DataAccessService.get(ServiceUrlConstant.SITE_LIST, {useDomainUrl: true})
                     .then(function (response) {
                         if (response.msg == 'success') {
                             return response.data.site_list;
